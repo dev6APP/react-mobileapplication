@@ -85,7 +85,7 @@ export default function FarmDetailsScreen({ route, navigation }) {
   }, []);
 
   function handleEdit(){
-    console.log('pressed Edit');
+    navigation.navigate('EditFarm', { id: id });
   }
 
   async function getFarmDetails(){
@@ -176,7 +176,7 @@ export default function FarmDetailsScreen({ route, navigation }) {
       }
       return(
         <View style={{
-          flex: 1
+          flex: .01
         }}>
           <Animated.View style={[style.circle, { bottom: icon_1}, { backgroundColor: useThemedStyles(red)}]}>
             <TouchableOpacity onPress={handleEdit}>
@@ -217,7 +217,6 @@ export default function FarmDetailsScreen({ route, navigation }) {
         ))}
         <Text style={[style.text, style.listWithLabelLabel]}>Fields</Text>
       </View>
-      <FloatingButton/>
       {console.log(details.address)}
       <MapView style={{flex: 1}} region={currentLocation} showsUserLocation={true}>
         <Marker coordinate={farmLocationCoords}>
@@ -231,6 +230,7 @@ export default function FarmDetailsScreen({ route, navigation }) {
         <Polygon coordinates={field6} strokeColor={useThemedStyles(background)} fillColor={useThemedStyles(green)} strokeWidth={3} lineDashPattern={[1]}/>
         <Polygon coordinates={field7} strokeColor={useThemedStyles(background)} fillColor={useThemedStyles(green)} strokeWidth={3} lineDashPattern={[1]}/>
       </MapView>
+      <FloatingButton/>
     </View>
   );
 };
