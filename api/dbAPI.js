@@ -73,10 +73,11 @@ class DbAPI {
         }
     }
     
-    static async editField(id, fieldName) {
-        console.log("field:", fieldName);
+    static async editFarm(id, farm) {
+        console.log("farm:", farm)
+        console.log("id:", id)
         try {
-            const response = await axios.put(baseUrl + 'Field' + id, {"name": fieldName});
+            const response = await axios.put(baseUrl + 'Farm' + id, farm);
             console.log(response);
         } catch (error) {
             console.log(error);
