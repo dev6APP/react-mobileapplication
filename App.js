@@ -39,7 +39,12 @@ import { useAuthentication } from './hooks/use_authentication';
 // Stack screens
 import WorkerDetails from './components/workers/worker_details';
 import FarmDetails from './components/farms/farm_details';
+import FieldDetails from './components/fields/field_details';
 import AdminFieldOwnerDetails from './components/admin/fieldowner/fieldOwner_details'
+import AddWorker from './components/workers/worker_add';
+import AddFarm from './components/farms/farm_add';
+import EditField from './components/fields/field_edit';
+import AddField from './components/fields/field_add';
 
 // there is a warning that does not matter
 import { LogBox } from 'react-native';
@@ -62,6 +67,7 @@ function WorkerStackScreen() {
     <WorkersStack.Navigator>
       <WorkersStack.Screen name="WorkersList" component={WorkersScreen} options={{ title: 'Workers' }}/>
       <WorkersStack.Screen name="WorkerDetails" component={WorkerDetails} options={{ title: 'Workers: Details' }}/>
+      <WorkersStack.Screen name="AddWorker" component={AddWorker} options={{ title: 'Workers: Add' }}/>
     </WorkersStack.Navigator>
   );
 }
@@ -73,6 +79,10 @@ function FarmStackScreen() {
     <FarmStack.Navigator>
       <FarmStack.Screen name="FarmsList" component={FarmsScreen} options={{ title: 'Farms' }}/>
       <FarmStack.Screen name="FarmDetails" component={FarmDetails} options={{ title: 'Farms: Details' }}/>
+      <FarmStack.Screen name="AddFarm" component={AddFarm} options={{ title: 'Farms: Add' }}/>
+      <FarmStack.Screen name="EditField" component={EditField} options={{ title: 'Field: Edit' }}/>
+      <FarmStack.Screen name="AddField" component={AddField} options={{ title: 'Field: Add' }}/>
+
     </FarmStack.Navigator>
   );
 }
@@ -103,7 +113,7 @@ export default function App() {
       <RecoilRoot>
       <ApolloProvider client={client}>
       <NavigationContainer>
-          <Tab.Navigator initialRouteName='Home' screenOptions={({route}) => ({
+          <Tab.Navigator initialRouteName='Farms' screenOptions={({route}) => ({
             tabBarIcon:({focused, color, size}) => {
               let iconName;
               switch (route.name){

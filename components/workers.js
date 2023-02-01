@@ -1,5 +1,5 @@
 import { FlatList, View, Text } from "react-native"
-
+import {FAB} from "react-native-elements";
 // Apollo
 import { disableExperimentalFragmentVariables, useQuery } from "@apollo/client";
 import { GET_WORKERS_FROM_FARM } from "../gql/queries";
@@ -20,6 +20,7 @@ import WorkerItem from "./workers/worker_item";
 import { useRecoilValue } from "recoil";
 import { farmState } from "../store";
 import { useEffect, useState } from "react";
+
 
 import DbAPI from '../api/DbAPI';
 
@@ -52,6 +53,10 @@ export default function WorkersScreen({ navigation }) {
   }
   if(loading) return <Fetching/>
 
+  function handleAdd(){
+    navigation.navigate('AddWorker');
+  }
+
   console.log(workers);
     return (
       <View style={style.body}>
@@ -60,6 +65,13 @@ export default function WorkersScreen({ navigation }) {
         renderItem={({ item }) => <WorkerItem item={item} onPress={handleDetails}/>}
         keyExtractor={(item, index) => index}
         ItemSeparatorComponent={Separator}
+      />
+      <FAB
+        icon={{ name: 'add', color: 'white' }}
+        size="large"
+        placement="right"
+        color="black"
+        onPress={handleAdd}
       />
     </View>
     );

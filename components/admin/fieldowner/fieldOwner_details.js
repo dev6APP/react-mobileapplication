@@ -27,7 +27,7 @@ export default function FieldOwnerDetails({ route, navigation }) {
           const result2 = await DbAPI.getFarmFromFieldOwner(id);
           console.log('details', result2.data);
           setDetails(result1.data[0]);
-          setDetails2(result2.data[0]);
+          setDetails2(result2.data);
         } catch (error) {
           console.log('Something went wrong with the database api.', error);
           <Error/>
@@ -36,26 +36,26 @@ export default function FieldOwnerDetails({ route, navigation }) {
       }
       fetchData();
     }, []);
-    
+    console.log(details2)
     if(loading) return <Fetching/>
   return (
     <View style={style.body}>
       <Text style={[style.text, style.name]}>{details.name}</Text>
       <Text style={style.text}>{details.country}, {details.city}</Text>
       <View style={style.listWithLabel}>
-        {details.farms.map((farm, indexFarm) => (
-          <View style={(indexFarm === details.farms.length - 1) ? style.none : style.listWithLabelItem} key={`Farm${indexFarm}`}>
+        {details2.map((farm, indexFarm) => (
+          <View style={(indexFarm === details2.length - 1) ? style.none : style.listWithLabelItem} key={`Farm${indexFarm}`}>
             <Text style={[style.text, style.listWithLabelItemTitle]} key={`keyFarmName${indexFarm}`}>{farm.name}</Text>
             {farm.started && (<Text style={[style.text, style.opacity6]} key={`keyFarmStartDate${indexFarm}`}>{farm.started}</Text>)}
-          </View>
-        ))}
-        <View style={style.farmInfoList}>
+          <View style={style.farmInfoList}>
         <Text style={[style.text, {fontWeight: "bold"}]}>Fields</Text>
-        {details2.fields.map((field, indexField) => (
+        {farm.fields.map((field, indexField) => (
           <Text style={[style.text, style.farmInfoListItem]} key={`Field${indexField}`}>{field.name}</Text>
         ))}
         </View>
-
+          </View>
+        ))}
+        
         <Text style={[style.text, style.listWithLabelLabel]}>Farms</Text>
       </View>
     </View>

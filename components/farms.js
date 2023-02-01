@@ -1,8 +1,6 @@
-import { FlatList, View } from "react-native"
+import { FlatList, ScrollView, View, TouchableOpacity, Text } from "react-native"
+import {FAB, Icon} from "react-native-elements";
 
-// apollo, queries
-import { useQuery } from "@apollo/client";
-import { GET_FIELDOWNER_FARMS } from "../gql/queries";
 
 // Theme
 import useThemedStyles from "../styles/theme/useThemedStyles";
@@ -33,23 +31,28 @@ export default function FarmsScreen({ navigation }) {
     const [farms, setFarms] = useState(null);
     const [loading, setLoading] = useState(true);
 
+
     useEffect(() => {
+      const focusHandler = navigation.addListener('focus', () => {
+        fetchData();
+      });
       const fetchData = async () => {
         setLoading(true);
         try {
           const result = await DbAPI.getFarms();
-          console.log('result', result.data);
+          //console.log('result', result.data);
           setFarms(result.data);
         } catch (error) {
           console.log('Something went wrong with the database api.', error);
         }
         setLoading(false);
       }
-      fetchData();
-    }, []);
+    });
     
     if(loading) return <Fetching/>
-
+    function handleAdd(){
+      navigation.navigate('AddFarm');
+    }
 
     function handleDetails(item){
       navigation.navigate('FarmDetails', { id: item.farmID });
@@ -57,12 +60,18 @@ export default function FarmsScreen({ navigation }) {
   
       return (
         <View style={style.body}>
-        <FlatList
-          data={farms} 
-          renderItem={({ item }) => <FarmItem item={item} onPress={handleDetails}/>}
-          keyExtractor={(item, index) => index}
-          ItemSeparatorComponent={Separator}
-        />
+          <View style={style.farmsList}>
+            <FlatList
+              data={farms} 
+              renderItem={({ item }) => <FarmItem item={item} onPress={handleDetails}/>}
+              keyExtractor={(item, index) => index}
+              ItemSeparatorComponent={Separator}
+            />
+        </View>
+        <TouchableOpacity style={style.addButton} onPress={handleAdd}>
+          <Icon name="add" />
+          <Text style={style.addButtonText}>Add a farm</Text>
+        </TouchableOpacity>
       </View>
       );
   }

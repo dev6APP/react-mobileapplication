@@ -13,7 +13,7 @@ export default function FarmItem({ item, onPress }) {
         <Text style={[style.text, style.flatListTitleText]}>{item.name}</Text>
       </View>
       <View>
-        <Text style={[style.text, style.flatListInfo]}>{item.started}</Text>
+        <Text style={[style.text, style.flatListInfo]}>{item.started.substring(0,10)}</Text>
       </View>
     </Pressable>
   );
