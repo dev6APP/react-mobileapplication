@@ -24,6 +24,9 @@ import MapView, {Polygon, Marker} from "react-native-maps";
 import configData from "../../config/apiKey.json";
 
 export default function FarmDetailsScreen({ route, navigation }) {
+  // Styling
+  const style = useThemedStyles(styles);
+  
   const { id } = route.params;
 
   // Farm details
@@ -75,10 +78,7 @@ export default function FarmDetailsScreen({ route, navigation }) {
   let field7_3 = {latitude: 51.169427, longitude: 4.973283}
   let field7_4 = {latitude: 51.169373, longitude: 4.974141}
   let field7 = [field7_1, field7_2, field7_3, field7_4]
-  
-  // Styling
-  const style = useThemedStyles(styles);
-  
+
   useEffect(() => {
     getFarmDetails();
     if(!global.location) getLocation();
@@ -92,7 +92,6 @@ export default function FarmDetailsScreen({ route, navigation }) {
     try{
       const result = await DbAPI.getFarmDetails(id);
       setDetails(result.data[0]);
-      console.log(result.data[0].address);
       getFarmLocation(result.data[0].address);
     } catch (err){
       console.log(err);
@@ -110,7 +109,6 @@ export default function FarmDetailsScreen({ route, navigation }) {
   async function getFarmLocation(address){
     let result = await fetch("http://api.positionstack.com/v1/forward?access_key=" + key + "&query=" + address)
       .then(res => res.json());
-    console.log(result.data[0])
     setFarmLocationCoords({latitude: result.data[0].latitude, longitude: result.data[0].longitude})
   }
 
