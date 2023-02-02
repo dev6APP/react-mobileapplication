@@ -113,7 +113,7 @@ export default function App() {
       <RecoilRoot>
       <ApolloProvider client={client}>
       <NavigationContainer>
-          <Tab.Navigator initialRouteName='Farms' screenOptions={({route}) => ({
+          <Tab.Navigator initialRouteName='Home' screenOptions={({route}) => ({
             tabBarIcon:({focused, color, size}) => {
               let iconName;
               switch (route.name){

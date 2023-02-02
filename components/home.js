@@ -7,9 +7,6 @@ import { styles } from "../styles/styles";
 // firebase
 import '../config/firebase';
 import { useAuthentication } from '../hooks/use_authentication';
-  
-// Geolocation
-global.location = null;
 
 // Icons
 import { Icon } from "@react-native-material/core";
@@ -17,15 +14,18 @@ import { Icon } from "@react-native-material/core";
 // Statistics
 import Stat_lineChart from './visualisations/statistics_lineChart'
 import Stat_BarChart from './visualisations/statistics_barChart'
-import Stat_heatmap from "./visualisations/statistics_heatmap";
+/* import Stat_heatmap from "./visualisations/statistics_heatmap"; */
 import Stat_interesting from "./visualisations/statistics_interesting";
 import { useEffect, useState } from "react";
 import DbAPI from "../api/DbAPI";
 
 import Fetching from "../layout/message_fetching";
 
+// Map
+import MapView, { PROVIDER_GOOGLE, Heatmap } from "react-native-maps";
+
 export default function HomeScreen({ navigation }) {
-    const [amtYears, setAmtYears] = useState(3);
+    const [amtYears, setAmtYears] = useState(7);
     let labelYears = [];
     let amountYears = [{data: []}]
     const [lineChartData, setLineChartData] = useState(null);
@@ -73,40 +73,31 @@ export default function HomeScreen({ navigation }) {
     const size = 40;
 
     if(!lineChartData) return <Fetching message="Getting data..."/>
-    
+
     return (
         <View style={style.body}>
-            <ScrollView>
-                    <TouchableOpacity style={[style.largeCameraButton, style.mb10]} onPress={() => {navigation.navigate('Camera')}}>
-                        <Icon name="camera-iris" size={size} style={style.largeCameraButtonText}/>
-                    </TouchableOpacity>
-                    {user?.uid == "uNek9kZlU9W8MAH5qDtze3CBc8j1"
-                    ? <View>
-                        <Text>you are a worker</Text>
-                    </View>
-                    : <View> 
-                        <Stat_lineChart 
-                            title={lineChartTitle}
-                            data={lineChartData}
-                            padding={paddingCharts}
-                        />
-                        <TouchableOpacity onPress={() => setAmtYears(amtYears + 1)}><Text>Up</Text></TouchableOpacity>
-                        <TouchableOpacity onPress={() => setAmtYears(amtYears - 1)}><Text>Down</Text></TouchableOpacity>
-                        <Stat_BarChart 
-                            title={barChartTitle}
-                            data={barChartData}
-                            padding={paddingCharts}
-                        />
-                        <Stat_interesting 
-                            title="Estimated number of strawberries on field 1"
-                            beforeData=""
-                            afterData=" strawberries"
-                            data={17259}    
-                        />
-                        <Stat_heatmap/>
-                    </View>}
-            </ScrollView>
+            <ScrollView>    
+                <TouchableOpacity style={[style.largeCameraButton, style.mb10]} onPress={() => {navigation.navigate('Camera')}}>
+                    <Icon name="camera-iris" size={size} style={style.largeCameraButtonText}/>
+                </TouchableOpacity>
+                {user?.uid == "uNek9kZlU9W8MAH5qDtze3CBc8j1"
+                ? <View>
+                    <Text>you are a worker</Text>
                 </View>
+                : <View> 
+                    <Stat_lineChart  title={lineChartTitle} data={lineChartData} padding={paddingCharts} />
+                    <Stat_BarChart title={barChartTitle} data={barChartData} padding={paddingCharts} />
+                    <Stat_interesting 
+                        title="Estimated number of strawberries on field 1"
+                        beforeData=""
+                        afterData=" strawberries"
+                        data={17259}    
+                    />
+                    {/* <Stat_heatmap/> */}
+                </View>
+                }
+            </ScrollView>
+        </View>
     );
     
 }

@@ -45,6 +45,10 @@ class DbAPI {
     static getPermissions() {
         return axios.get(baseUrl + "Permission");
     }
+
+    static getBoundaries(fieldId) {
+        return axios.get(baseUrl + "Boundary/field/" + fieldId);
+    }
     
     static async addFarm(farm) {
         try {

@@ -2,11 +2,9 @@ import { View, Text, TouchableOpacity, Animated } from 'react-native';
 import React from "react";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-import { red } from "../../styles/styles";
-
 //theme
 import useThemedStyles from "../../styles/theme/useThemedStyles";
-import { styles, green, background } from "../../styles/styles";
+import { styles, green, red, blue, background } from "../../styles/styles";
 
 // Layout
 import Fetching from '../../layout/message_fetching';
@@ -19,7 +17,7 @@ import DbAPI from '../../api/DbAPI';
 import { useState, useEffect } from "react";
 
 // Map
-import MapView, {Polygon, Marker} from "react-native-maps";
+import MapView, { Polygon, Circle, Marker} from "react-native-maps";
 
 import configData from "../../config/apiKey.json";
 
@@ -30,58 +28,27 @@ export default function FarmDetailsScreen({ route, navigation }) {
   const { id } = route.params;
 
   // Farm details
-  const [details, setDetails] = useState(null);
+  const [farm, setFarm] = useState(null);
 
   const key = configData.apiKeyGetCoords;
   const [farmLocationCoords, setFarmLocationCoords] = useState(null);
   
   // Map
   let currentLocation = null;
-  let field1_1 = {latitude: 51.169640, longitude: 4.970737}
-  let field1_2 = {latitude: 51.168927, longitude: 4.971756}
-  let field1_3 = {latitude: 51.169331, longitude: 4.972486}
-  let field1_4 = {latitude: 51.170056, longitude: 4.971450}
-  let field1 = [field1_1, field1_2, field1_3, field1_4]
 
-  let field2_1 = {latitude: 51.169266, longitude: 4.969867}
-  let field2_2 = {latitude: 51.169961, longitude: 4.970834}
-  let field2_3 = {latitude: 51.170317, longitude: 4.970212}
-  let field2_4 = {latitude: 51.169621, longitude: 4.969225}
-  let field2 = [field2_1, field2_2, field2_3, field2_4]
-
-  let field3_1 = {latitude: 51.169762, longitude: 4.968624}
-  let field3_2 = {latitude: 51.170213, longitude: 4.969262}
-  let field3_3 = {latitude: 51.170869, longitude: 4.968082}
-  let field3_4 = {latitude: 51.170415, longitude: 4.967449}
-  let field3 = [field3_1, field3_2, field3_3, field3_4]
-
-  let field4_1 = {latitude: 51.170958, longitude: 4.968876}
-  let field4_2 = {latitude: 51.171321, longitude: 4.968232}
-  let field4_3 = {latitude: 51.171924, longitude: 4.969096}
-  let field4_4 = {latitude: 51.171555, longitude: 4.969769}
-  let field4 = [field4_1, field4_2, field4_3, field4_4]
-
-  let field5_1 = {latitude: 51.171116, longitude: 4.970123}
-  let field5_2 = {latitude: 51.171449, longitude: 4.970703}
-  let field5_3 = {latitude: 51.170852, longitude: 4.971563}
-  let field5_4 = {latitude: 51.170517, longitude: 4.970976}
-  let field5 = [field5_1, field5_2, field5_3, field5_4]
-
-  let field6_1 = {latitude: 51.170906, longitude: 4.972621}
-  let field6_2 = {latitude: 51.170695, longitude: 4.973462}
-  let field6_3 = {latitude: 51.169861, longitude: 4.972963}
-  let field6_4 = {latitude: 51.170070, longitude: 4.972116}
-  let field6 = [field6_1, field6_2, field6_3, field6_4]
-
-  let field7_1 = {latitude: 51.168492, longitude: 4.973991}
-  let field7_2 = {latitude: 51.168543, longitude: 4.973128}
-  let field7_3 = {latitude: 51.169427, longitude: 4.973283}
-  let field7_4 = {latitude: 51.169373, longitude: 4.974141}
-  let field7 = [field7_1, field7_2, field7_3, field7_4]
+  let field1_hp_1 = {coords: {latitude: 51.1700, longitude: 4.9715}, weight: 0.5}
+  let field1_hp_2 = {coords: {latitude: 51.1699, longitude: 4.9714}, weight: 0.7}
+  let field1_hp_3 = {coords: {latitude: 51.1698, longitude: 4.9716}, weight: 0.5}
+  let field1_hp_4 = {coords: {latitude: 51.1697, longitude: 4.9715}, weight: 0.7}
+  let field1_hp_5 = {coords: {latitude: 51.1696, longitude: 4.9718}, weight: 0.5}
+  let field1_hp_6 = {coords: {latitude: 51.1695, longitude: 4.9720}, weight: 0.7}
+  let field1_hp_7 = {coords: {latitude: 51.1694, longitude: 4.9714}, weight: 0.5}
+  let field1_hp_8 = {coords: {latitude: 51.1693, longitude: 4.9721}, weight: 0.7}
+  let field1_hp_9 = {coords: {latitude: 51.1692, longitude: 4.9719}, weight: 0.7}
+  let field1_hp = [field1_hp_1, field1_hp_2, field1_hp_3, field1_hp_4, field1_hp_5, field1_hp_6, field1_hp_7, field1_hp_8, field1_hp_9];
 
   useEffect(() => {
     getFarmDetails();
-    if(!global.location) getLocation();
   }, []);
 
   function handleEdit(){
@@ -91,28 +58,36 @@ export default function FarmDetailsScreen({ route, navigation }) {
   async function getFarmDetails(){
     try{
       const result = await DbAPI.getFarmDetails(id);
-      setDetails(result.data[0]);
-      getFarmLocation(result.data[0].address);
+      let tempFarm = result.data[0];
+
+      for(let i = 0; i < tempFarm.fields.length; i++){
+        let boundaries = [];
+        let fieldId = tempFarm.fields[i].fieldID;
+        const result = await DbAPI.getBoundaries(fieldId);
+
+        for(let j = 0; j < result.data.length; j++) {
+          let boundary = {latitude: parseFloat(result.data[j].x), longitude: parseFloat(result.data[j].y)}
+          boundaries.push(boundary);
+        }
+        tempFarm.fields[i].boundaries = boundaries;
+      }
+
+      setFarm(tempFarm);
+
+      getFarmLocation(tempFarm.address);
     } catch (err){
       console.log(err);
     }
   }
-  
-  async function getLocation(){
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if(status === 'granted') {
-        global.location = await Location.getCurrentPositionAsync({});
-        currentLocation = { latitude: global.location.coords.latitude, longitude: global.location.coords.longitude}
-    }
-  }
 
   async function getFarmLocation(address){
-    let result = await fetch("http://api.positionstack.com/v1/forward?access_key=" + key + "&query=" + address)
-      .then(res => res.json());
-    setFarmLocationCoords({latitude: result.data[0].latitude, longitude: result.data[0].longitude})
+    let result = await fetch("https://api.geoapify.com/v1/geocode/search?text=" + address + "&apiKey=fa6b9b64543b416ab65fee31fb07ee1d")
+      .then(response => response.json())
+    console.log("result:", result.features[0].bbox)
+    setFarmLocationCoords({latitude: result.features[0].bbox[1], longitude: result.features[0].bbox[0]})
   }
 
-  if(!details) return <Fetching message="Getting farm details..."/>
+  if(!farm) return <Fetching message="Getting farm details..."/>
   if(!farmLocationCoords) return <Fetching message="Getting farm location..."/>
     
     async function deleteFarm(id){
@@ -174,7 +149,7 @@ export default function FarmDetailsScreen({ route, navigation }) {
       }
       return(
         <View style={{
-          flex: 1
+          flex: 0.01
         }}>
           <Animated.View style={[style.circle, { bottom: icon_1}, { backgroundColor: useThemedStyles(red)}]}>
             <TouchableOpacity onPress={handleEdit}>
@@ -207,27 +182,27 @@ export default function FarmDetailsScreen({ route, navigation }) {
 
   return (
     <View style={style.body}>
-      <Text style={[style.text, style.name]}>{details.name}</Text>
-      <Text style={style.text}>{details.started.substring(0,10)}</Text>
+      <Text style={[style.text, style.name]}>{farm.name}</Text>
+      <Text style={style.text}>{farm.started.substring(0,10)}</Text>
       <View style={style.listWithLabel}>
-        {details.fields.map((field, index) => (
+        {farm.fields.map((field, index) => (
           <Text style={style.text} key={index}>{field.name}</Text>
         ))}
         <Text style={[style.text, style.listWithLabelLabel]}>Fields</Text>
       </View>
       <FloatingButton/>
-      {console.log(details.address)}
+      {console.log(farm.address)}
       <MapView style={{flex: 1}} region={currentLocation} showsUserLocation={true}>
         <Marker coordinate={farmLocationCoords}>
-          <Text style={style.mapMarker}>{details.name}</Text>
+          <Text style={style.mapMarker}>{farm.name}</Text>
         </Marker>
-        <Polygon coordinates={field1} strokeColor={useThemedStyles(background)} fillColor={useThemedStyles(green)} strokeWidth={3} lineDashPattern={[1]}/>
-        <Polygon coordinates={field2} strokeColor={useThemedStyles(background)} fillColor={useThemedStyles(green)} strokeWidth={3} lineDashPattern={[1]}/>
-        <Polygon coordinates={field3} strokeColor={useThemedStyles(background)} fillColor={useThemedStyles(green)} strokeWidth={3} lineDashPattern={[1]}/>
-        <Polygon coordinates={field4} strokeColor={useThemedStyles(background)} fillColor={useThemedStyles(green)} strokeWidth={3} lineDashPattern={[1]}/>
-        <Polygon coordinates={field5} strokeColor={useThemedStyles(background)} fillColor={useThemedStyles(green)} strokeWidth={3} lineDashPattern={[1]}/>
-        <Polygon coordinates={field6} strokeColor={useThemedStyles(background)} fillColor={useThemedStyles(green)} strokeWidth={3} lineDashPattern={[1]}/>
-        <Polygon coordinates={field7} strokeColor={useThemedStyles(background)} fillColor={useThemedStyles(green)} strokeWidth={3} lineDashPattern={[1]}/>
+        {farm.fields.map((item, index) => (
+          <Polygon coordinates={item.boundaries} strokeColor={useThemedStyles(background)} fillColor={useThemedStyles(green)} strokeWidth={3} lineDashPattern={[1]}/>
+        ))}
+        
+        {field1_hp.map((item, index) => (
+            <Circle center={item.coords} radius={4} strokeWidth={0} fillColor={`hsl(${20 + (40 * item.weight)}, 100%, 50%)`} zIndex={1000}/>
+        ))}
       </MapView>
     </View>
   );
