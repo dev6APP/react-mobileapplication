@@ -97,6 +97,7 @@ function AdminFieldOwnerStackScreen(){
       <AdminFieldOwnerStack.Screen name="FieldOwnerList" component={AdminFieldOwnerScreen} options={{title: "Admin: Field owners"}}/>
       <AdminFieldOwnerStack.Screen name="FieldOwnerDetails" component={AdminFieldOwnerDetails} options={{title: "Admin: Field owner detail"}}/>
       <AdminFieldOwnerStack.Screen name="AddFieldOwner" component={AddFieldOwner} options={{title: "Admin: Add Field owner"}}/>
+      <AdminFieldOwnerStack.Screen name="AddFarm" component={AddFarm} options={{title: "Admin: Add Farm to Field owner"}}/>
     </AdminFieldOwnerStack.Navigator>
   )
 }
@@ -116,7 +117,7 @@ export default function App() {
       <RecoilRoot>
       <ApolloProvider client={client}>
       <NavigationContainer>
-          <Tab.Navigator initialRouteName='Workers' screenOptions={({route}) => ({
+          <Tab.Navigator initialRouteName='Home' screenOptions={({route}) => ({
             tabBarIcon:({focused, color, size}) => {
               let iconName;
               switch (route.name){

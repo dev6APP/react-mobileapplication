@@ -18,12 +18,12 @@ import { FormItem } from 'react-native-form-component';
 import { Alert } from 'react-native';
 
 
-export default function AddFarm({navigation}) {
+export default function AddFarm({route, navigation}) {
     const [farm, setFarm] = useState({name: "",address:"", fieldOwnerID:0, started:""});
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
-    const fieldOwner = useRecoilValue(userID)
-
+    const fieldOwner = route.params.id;
+    
+    console.log('fieldOwner: ', fieldOwner);
    farm.fieldOwnerID = fieldOwner;
 
     const showDatePicker = () => {
