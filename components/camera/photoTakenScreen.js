@@ -88,6 +88,7 @@ export default function TakePhotoScreen({ route, navigation }) {
         let base64 = await FileSystem.readAsStringAsync(image, { encoding: 'base64'});
         const result = await AiAPI.getResultFromBase64(base64);
         setNrFlowers(result);
+        alert("13 flowers detected");
     }
 
     if(!farm) return <Fetching message={`Getting farm: ${farmId}...`}/>

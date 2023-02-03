@@ -326,6 +326,10 @@ export const styles = theme =>
             borderRadius: 50,
             justifyContent: 'center',
             alignItems: 'center',
-         },
-         
-    });
+        },
+        legend:{
+           display: "flex",
+           flexDirection: "row"
+        }
+    }
+);

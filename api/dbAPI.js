@@ -117,9 +117,10 @@ class DbAPI {
     }
     // Post photodata
     static async addPhotoData(photoData){
+        console.log(baseUrl + "PhotoData");
         console.log(photoData)
         try{
-            await axios.post(baseUrl + "PhotoData", {
+            const response = await axios.post(baseUrl + "PhotoData", {
                 //"fieldID": photoData.fieldID,
                 //"amountFlowers": photoData.amountFlowers, 
                 //"workerID": photoData.workerID, 
@@ -130,11 +131,12 @@ class DbAPI {
                 "fieldID": 1,
                 "amountFlowers": 15, 
                 "workerID": 1, 
-                "date": "2023-02-03T09:50:31.303Z", 
+                "date": "2023-02-03T09:39:34.643Z", 
                 "fieldOwnerID": 1,
-                "x": "4.9682609",
-                "y": "51.1573353"
+                "x": "4.9682518",
+                "y": "51.1573526"
             });
+            console.log(response);
         } catch (err){
             console.log(err);
         }
@@ -143,7 +145,8 @@ class DbAPI {
     static async addFieldOwner(fieldOwner){
         console.log("data:", fieldOwner);
         try{
-            await axios.post(baseUrl + "/FieldOwner", fieldOwner);
+            const response = await axios.post(baseUrl + "/FieldOwner", fieldOwner);
+            console.log(response);
         } catch (err){
             console.log(err);
         }

@@ -196,6 +196,9 @@ export default function FarmDetailsScreen({ route, navigation }) {
         ))}
         <Text style={[style.text, style.listWithLabelLabel]}>Fields</Text>
       </View>
+      {farmLocationCoords && (
+        <View style={style.legend}><Text style={{color: `hsl(60, 100%, 50%)`}}>0</Text><Text style={style.text}> - </Text><Text style={{color: `hsl(20, 100%, 50%)`}}>{max}</Text></View>
+      )}
       {farmLocationCoords && 
       (<MapView style={{flex: 1}} region={farmLocationCoords} showsUserLocation={true}>
         <Marker coordinate={farmLocationCoords}>
@@ -208,7 +211,7 @@ export default function FarmDetailsScreen({ route, navigation }) {
           )}
           {item.photos.length > 0 &&(
             item.photos.map((photo, pindex) => (
-              <Circle center={photo.coords} radius={3} strokeWidth={0} fillColor={`hsl(${60 - (40 * (photo.amount / max))}, 100%, 50%)`} zIndex={1000}/>
+              <Circle center={photo.coords} radius={3} strokeWidth={0} fillColor={`hsl(${80 - (60 * (photo.amount / max))}, 100%, 50%)`} zIndex={1000}/>
             ))
           )}
           </>
