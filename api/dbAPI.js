@@ -139,6 +139,15 @@ class DbAPI {
             console.log(err);
         }
     }
+
+    static async addFieldOwner(fieldOwner){
+        console.log("data:", fieldOwner);
+        try{
+            await axios.post(baseUrl + "/FieldOwner", fieldOwner);
+        } catch (err){
+            console.log(err);
+        }
+    }
 }
 
 export default DbAPI;

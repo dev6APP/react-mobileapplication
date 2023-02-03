@@ -11,11 +11,9 @@ import Error from '../../layout/message_error';
 
 import DbAPI from '../../api/DbAPI';
 import { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { farmList, userID } from '../../store';
-import { Flex } from '@react-native-material/core';
 import { FormItem } from 'react-native-form-component';
 import { Alert } from 'react-native';
 
