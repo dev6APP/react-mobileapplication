@@ -35,7 +35,7 @@ class DbAPI {
     }
 
     static addWorker(worker) {
-        return axios.post(baseUrl + "Worker");
+        return axios.post(baseUrl + "Worker", worker);
     }
 
     static getLanguages() {
@@ -64,9 +64,12 @@ class DbAPI {
     }
 
     static async addField(field) {
-        console.log("field:", field);
+        console.log("axios field:", field);
         try {
-            const response = await axios.post(baseUrl + 'Field', field);
+            const response = await axios.post(baseUrl + 'Field', {
+                "Name": field.name,
+                "farmID": field.farmID
+            });
             console.log(response);
         } catch (error) {
             console.log(error);

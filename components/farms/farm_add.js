@@ -67,7 +67,6 @@ export default function AddFarm({navigation}) {
         isRequired
         value={farm.name}
         onChangeText={(name) => setFarm({...farm, name})}
-        asterik
         placeholder='Name'
         />
 
@@ -76,7 +75,6 @@ export default function AddFarm({navigation}) {
         isRequired
         value={farm.address}
         onChangeText={(address) => setFarm({...farm, address})}
-        asterik
         />
       
       <Text style={[style.addLabel]}>Startdate: </Text>
