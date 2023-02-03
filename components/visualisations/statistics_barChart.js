@@ -17,9 +17,9 @@ export default function Stat_BarChart(props){
       <BarChart
         data={props.data}
         width={Dimensions.get("window").width - props.padding} // Width of screen - width of body - width of padding
-        height={220}
+        height={200}
         yAxisLabel=""
-        yAxisSuffix="k"
+        yAxisSuffix=""
         withInnerLines={false}
         showValuesOnTopOfBars={true}
         chartConfig={{

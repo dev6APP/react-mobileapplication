@@ -89,7 +89,16 @@ class DbAPI {
     
     // Get amount of strawberries over one year
     static getAmountOfFieldOwnerOverYear(fieldOwnerId, year) {
-        return axios.get(baseUrl + "/PhotoData/fieldOwner/" + fieldOwnerId + "/year/" + year);
+        return axios.get(baseUrl + "PhotoData/fieldOwner/" + fieldOwnerId + "/year/" + year);
+    }
+
+    static getAmountPerField(fieldId){
+        let url = baseUrl + "PhotoData/FlowersLastYear/Field/" + fieldId;
+        return axios.get(url);
+    }
+
+    static getPhotoDataPerField(fieldId){
+        return axios.get(baseUrl + "PhotoData/Field/" + fieldId)
     }
 
     // Posts

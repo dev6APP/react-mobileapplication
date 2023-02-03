@@ -47,6 +47,9 @@ export default function TakePhotoScreen({ route, navigation }) {
     const [selected, setSelected] = useState(null);
     const [fieldData, setFieldData] = useState(null);
 
+    // Location
+    const [location, setLocation] = useState(null);
+
     // Image (link to local image)
     const { image } = route.params;
 
@@ -62,7 +65,8 @@ export default function TakePhotoScreen({ route, navigation }) {
     async function getLocation() {
         let { status } = await Location.requestForegroundPermissionsAsync();
         if(status === 'granted') {
-            global.location = await Location.getCurrentPositionAsync({});
+            const result = await Location.getCurrentPositionAsync({});
+            setLocation({latitude: result.coords.latitude, longitude: result.coords.longitude});
         }
     }
 
@@ -88,7 +92,7 @@ export default function TakePhotoScreen({ route, navigation }) {
 
     if(!farm) return <Fetching message={`Getting farm: ${farmId}...`}/>
     if(!fields) return <Fetching message={`Getting fields from farm: ${farmId}...`}/>
-    if(!global.location) return <Fetching message="Looking for location..."/>
+    if(!location) return <Fetching message="Looking for location..."/>
     if(!nrFlowers) return <Fetching message="Getting number of flowers..."/>
     
     return (
@@ -98,7 +102,7 @@ export default function TakePhotoScreen({ route, navigation }) {
                 <Icon name="camera-iris" size={size} style={style.textBG_COLOR}/>
             </TouchableOpacity>
             <TouchableOpacity style={style.usePhotoButton} onPress={() => {usePhoto();}}>
-                <Text style={[style.textBG_COLOR, {fontSize: 30}]}>Use photo</Text>
+                <Text style={[style.text, {fontSize: 30}]}>Use photo</Text>
             </TouchableOpacity>
             <Text style={[style.usePhoneButton, style.textBG_COLOR, {fontSize: 30}]}>{nrFlowers}</Text>
             <View style={style.selectList}>
@@ -122,33 +126,31 @@ export default function TakePhotoScreen({ route, navigation }) {
 
     async function usePhoto() {
         // Do things with this image
-        // Post of coordinate
-        /* Coordinates */
-        let x = global.location.coords.longitude;
-        let y = global.location.coords.latitude;
-        try{
-            await DbAPI.addCoordinate({"x": JSON.stringify(x), "y": JSON.stringify(y)});
-        } catch (err){
-            return;
-        }
-        // Get this id back
+        
+        // Coordinates
+        let x = location.longitude;
+        let y = location.latitude;
 
-        // Post of photoData
+        // Field id
         let fieldId = selected;
+        
         // nrFlowers needs to be reworked after AI Puts the result in JSON instead of text
         let amtFlowers = nrFlowers;
+        console.log(nrFlowers);
         amtFlowers = 15;
-        console.log("amtFlowers:", nrFlowers);
-        // WorkerID
+        console.log("amtFlowers:", amtFlowers);
+
         // FieldownerID
         let fOwnerId = farm.fieldOwnerID;
         // Current userId
-        let workerId = 3;// cUser.id;
+        let workerId = 1;
         /* Make a date */
-        let date = new Date()
+        let date = new Date().toISOString();
         
+        let photoData = {"fieldID": fieldId, "amountFlowers": amtFlowers, "workerID": workerId, "date": date, "fieldOwnerID": fOwnerId, "x": JSON.stringify(x), "y": JSON.stringify(y)};
+        console.log(photoData)
         try{
-            await DbAPI.addPhotoData({"fieldID": fieldId, "amountFlowers": amtFlowers, "workerID": workerId, "date": date, "fieldOwnerID": fOwnerId});
+            await DbAPI.addPhotoData(photoData);
         } catch (err){
             return;
         }
