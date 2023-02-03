@@ -106,85 +106,85 @@ export default function FarmDetailsScreen({ route, navigation }) {
     }
       navigation.goBack();
     }
-  // FloatingButton
-  const FloatingButton = () => {
+    // FloatingButton
+    const FloatingButton = () => {
 
-    const [icon_1] = useState(new Animated.Value(10));
-    const [icon_2] = useState(new Animated.Value(10));
-    const [icon_3] = useState(new Animated.Value(10));
-  
-  
-    const [pop, setPop] = useState(false);
-  
-    const popIn = () => {
-      setPop(true);
-      Animated.timing(icon_1, {
-        toValue: 90,
-        duration: 300,
-        useNativeDriver: false,
-      }).start();
-      Animated.timing(icon_2, {
-        toValue: 70,
-        duration: 300,
-        useNativeDriver: false,
-      }).start();
-      Animated.timing(icon_3, {
+      const [icon_1] = useState(new Animated.Value(10));
+      const [icon_2] = useState(new Animated.Value(10));
+      const [icon_3] = useState(new Animated.Value(10));
+    
+    
+      const [pop, setPop] = useState(false);
+    
+      const popIn = () => {
+        setPop(true);
+        Animated.timing(icon_1, {
           toValue: 90,
           duration: 300,
           useNativeDriver: false,
-      }).start();
-    }
-  
-    const popOut = () => {
-      setPop(false);
-      Animated.timing(icon_1, {
-        toValue: 10,
-        duration: 300,
-        useNativeDriver: false,
-      }).start();
-      Animated.timing(icon_2, {
-        toValue: 10,
-        duration: 300,
-        useNativeDriver: false,
-      }).start();
-      Animated.timing(icon_3, {
+        }).start();
+        Animated.timing(icon_2, {
+          toValue: 70,
+          duration: 300,
+          useNativeDriver: false,
+        }).start();
+        Animated.timing(icon_3, {
+            toValue: 90,
+            duration: 300,
+            useNativeDriver: false,
+        }).start();
+      }
+    
+      const popOut = () => {
+        setPop(false);
+        Animated.timing(icon_1, {
           toValue: 10,
           duration: 300,
           useNativeDriver: false,
-      }).start();
-    }
-    return(
-      <View style={{
-        flex: 0.01
-      }}>
-        <Animated.View style={[style.circle, { bottom: icon_1}, { backgroundColor: useThemedStyles(red)}]}>
-          <TouchableOpacity onPress={handleEdit}>
-            <Icon name="pencil" size={25} color="#FFFF" />
-          </TouchableOpacity>
-        </Animated.View>
-        <Animated.View style={[style.circle, { bottom: icon_2, right: icon_2}, { backgroundColor: useThemedStyles(red)}]}>
-          <TouchableOpacity /*onPress={handleAdd}*/>
-            <Icon name="plus" size={25} color="#FFFF" />
+        }).start();
+        Animated.timing(icon_2, {
+          toValue: 10,
+          duration: 300,
+          useNativeDriver: false,
+        }).start();
+        Animated.timing(icon_3, {
+            toValue: 10,
+            duration: 300,
+            useNativeDriver: false,
+        }).start();
+      }
+      return(
+        <View style={{
+          flex: .01
+        }}>
+          <Animated.View style={[style.circle, { bottom: icon_1}, { backgroundColor: useThemedStyles(red)}]}>
+            <TouchableOpacity onPress={handleEdit}>
+              <Icon name="pencil" size={25} color="#FFFF" />
             </TouchableOpacity>
           </Animated.View>
-        <Animated.View style={[style.circle, { right: icon_3}, { backgroundColor: useThemedStyles(red)}]}>
-          <TouchableOpacity onPress={() => deleteFarm(id)}>
-            <Icon name="trash" size={25} color="#FFFF" />
+          <Animated.View style={[style.circle, { bottom: icon_2, right: icon_2}, { backgroundColor: useThemedStyles(red)}]}>
+            <TouchableOpacity onPress={handleAdd}>
+              <Icon name="plus" size={25} color="#FFFF" />
+              </TouchableOpacity>
+            </Animated.View>
+          <Animated.View style={[style.circle, { right: icon_3}, { backgroundColor: useThemedStyles(red)}]}>
+            <TouchableOpacity onPress={() => deleteFarm(id)}>
+              <Icon name="trash" size={25} color="#FFFF" />
+            </TouchableOpacity>
+          </Animated.View>
+          <TouchableOpacity
+            style={[style.circle, {backgroundColor: useThemedStyles(red)}]}
+            onPress={() => {
+              pop === false ? popIn() : popOut();
+            }}
+          >
+            <Icon name="bars" size={25} color="#FFFF" />
           </TouchableOpacity>
-        </Animated.View>
-        <TouchableOpacity
-          style={[style.circle, {backgroundColor: useThemedStyles(red)}]}
-          onPress={() => {
-            pop === false ? popIn() : popOut();
-          }}
-        >
-          <Icon name="bars" size={25} color="#FFFF" />
-        </TouchableOpacity>
-      </View>
-    )
-  
-  }
-  //end of FloatingButton
+        </View>
+      )
+    
+    }
+    //end of FloatingButton
 
   return (
     <View style={style.body}>
