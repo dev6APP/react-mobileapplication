@@ -14,15 +14,21 @@ import DbAPI from '../../api/DbAPI';
 import { useState, useEffect } from 'react';
 
 export default function EditFarm({ route, navigation }) {
-    const { id } = route.params;
-    const [farm, setFarm] = useState({name: "", address: ""});
+    const id = route.params.id;
 
-    const style = useThemedStyles(styles);
     
-    async function editFarm(id, farm){
+    const [farm, setFarm] = useState({name: "", address: ""});
+    const style = useThemedStyles(styles);
+
+    useEffect(() => {
+      setFarm({address: route.params.address, name: route.params.name});
+    }, []);
+    
+    async function editFarm(){
+      console.log('id: ', id , 'farm: ', farm)
         try {
             console.log(farm)
-            DbAPI.editFarm(farm);
+            DbAPI.editFarm(id, farm);
           } catch (error) {
             console.log('Something went wrong with the database api.', error);
             <Error/>
@@ -30,29 +36,19 @@ export default function EditFarm({ route, navigation }) {
         navigation.goBack();
     }
 
-    function handleName(e){
-        setFarm({...farm, name: e})
-        console.log(farm);
-    }
-
-    function handleAddress(e){
-        console.log(e);
-        setFarm({...farm, address: e})
-    }
-
   return (
     <View style={style.body}>
       <FormItem
         isRequired
         value={farm.name}
-        onChangeText={handleName}
+        onChangeText={(name) => setFarm({...farm, name})}
         asterik
         placeholder='Farm name'
         />
         <FormItem
         isRequired
         value={farm.address}
-        onChangeText={handleAddress}
+        onChangeText={(address) => setFarm({...farm, address})}
         asterik
         placeholder='Farm address'
         />
@@ -63,7 +59,7 @@ export default function EditFarm({ route, navigation }) {
         color='#2c3e50'
         type='string'
         title="Save changes"
-        onPress={() => editFarm(farm)}
+        onPress={() => editFarm()}
       />
     </View> 
   );

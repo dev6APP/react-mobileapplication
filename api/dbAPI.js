@@ -78,9 +78,9 @@ class DbAPI {
     
     static async editFarm(id, farm) {
         console.log("farm:", farm)
-        console.log("id:", id)
+        console.log(baseUrl + 'Farm/' + id);
         try {
-            const response = await axios.put(baseUrl + 'Farm' + id, farm);
+            const response = await axios.put(baseUrl + 'Farm/' + id, farm);
             console.log(response);
         } catch (error) {
             console.log(error);

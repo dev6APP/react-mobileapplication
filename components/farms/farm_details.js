@@ -88,7 +88,7 @@ export default function FarmDetailsScreen({ route, navigation }) {
   }, []);
 
   function handleEdit(){
-    navigation.navigate('EditFarm', { id: id });
+    navigation.navigate('EditFarm', { id: id, name: details.name, address: details.address});
   }
   function handleAdd(){
     console.log('add field to farm with id', id);
