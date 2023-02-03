@@ -80,12 +80,19 @@ export default function FarmDetailsScreen({ route, navigation }) {
   const style = useThemedStyles(styles);
   
   useEffect(() => {
-    getFarmDetails();
+    const focusHandler = navigation.addListener('focus', () => {
+      getFarmDetails();
+    });
+    
     if(!global.location) getLocation();
   }, []);
 
   function handleEdit(){
-    navigation.navigate('EditFarm', { id: id });
+    navigation.navigate('EditFarm', { id: id, name: details.name, address: details.address});
+  }
+  function handleAdd(){
+    console.log('add field to farm with id', id);
+    navigation.navigate('AddField', { id: id });
   }
 
   async function getFarmDetails(){
@@ -184,7 +191,7 @@ export default function FarmDetailsScreen({ route, navigation }) {
             </TouchableOpacity>
           </Animated.View>
           <Animated.View style={[style.circle, { bottom: icon_2, right: icon_2}, { backgroundColor: useThemedStyles(red)}]}>
-            <TouchableOpacity /*onPress={handleAdd}*/>
+            <TouchableOpacity onPress={handleAdd}>
               <Icon name="plus" size={25} color="#FFFF" />
               </TouchableOpacity>
             </Animated.View>

@@ -1,19 +1,20 @@
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity, Animated } from 'react-native';
+import React from "react";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 //theme
 import useThemedStyles from "../../styles/theme/useThemedStyles";
 import { styles } from "../../styles/styles";
+import { red } from "../../styles/styles";
+
 
 // Layout
 import Fetching from '../../layout/message_fetching';
 import Error from '../../layout/message_error';
 
-// Apollo
-import { useQuery } from "@apollo/client";
-import { GET_WORKER_DETAILS } from '../../gql/queries';
-
 import DbAPI from '../../api/DbAPI';
 import { useState, useEffect } from 'react';
+import { FAB } from '@react-native-material/core';
 
 export default function WorkerDetailsScreen({ route, navigation }) {
     const { id } = route.params;
@@ -34,7 +35,10 @@ export default function WorkerDetailsScreen({ route, navigation }) {
         }
         setLoading(false);
       }
-      fetchData();
+      const focusHandler = navigation.addListener('focus', () => {
+        fetchData();
+      });
+      
     }, []);
     
     if(loading) return <Fetching/>

@@ -1,6 +1,4 @@
 import { View, Text } from 'react-native';
-import { Pressable, Button } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
 
 import { FormItem } from 'react-native-form-component';
 import {FAB} from "react-native-elements";
@@ -14,20 +12,19 @@ import Error from '../../layout/message_error';
 
 import DbAPI from '../../api/DbAPI';
 import { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import Fetching from '../../layout/message_fetching';
 
+export default function AddField({ route, navigation }) {
+    const {id} = route.params;
+    const [field, setField] = useState({name: "", farmID:id});
 
-export default function EditField({ farmId, navigation }) {
-    const [field, setField] = useState({name: "", farmID: farmId});
-
+    console.log('init field:', field)
     const style = useThemedStyles(styles);
     
-    async function editField(field){
+    async function addField(field){
+      console.log('tf:', field)
         try {
             console.log(field)
-            DbAPI.editField(field);
+            DbAPI.addField(field);
           } catch (error) {
             console.log('Something went wrong with the database api.', error);
             <Error/>
@@ -39,9 +36,8 @@ export default function EditField({ farmId, navigation }) {
     <View style={style.body}>
       <FormItem
         isRequired
-        value={fieldName}
-        onChangeText={(name) => setField(...field, name)}
-        asterik
+        value={field.name}
+        onChangeText={(name) => setField({...field, name})}
         placeholder='Field name'
         />
         <FAB
@@ -51,7 +47,7 @@ export default function EditField({ farmId, navigation }) {
         color='#2c3e50'
         type='string'
         title="Save changes"
-        onPress={() => editField(fieldName)}
+        onPress={() => addField(field)}
       />
     </View> 
   );

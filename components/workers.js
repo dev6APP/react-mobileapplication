@@ -1,5 +1,5 @@
-import { FlatList, View, Text } from "react-native"
-import {FAB} from "react-native-elements";
+import { FlatList, View, Text, TouchableOpacity } from "react-native"
+import {Icon} from "react-native-elements";
 // Apollo
 import { disableExperimentalFragmentVariables, useQuery } from "@apollo/client";
 import { GET_WORKERS_FROM_FARM } from "../gql/queries";
@@ -44,7 +44,9 @@ export default function WorkersScreen({ navigation }) {
       }
       setLoading(false);
     }
-    fetchData();
+    const focusHandler = navigation.addListener('focus', () => {
+      fetchData();
+    });
   }, []);
     
   
@@ -60,19 +62,18 @@ export default function WorkersScreen({ navigation }) {
   console.log(workers);
     return (
       <View style={style.body}>
+        <View style={style.farmsList}>
       <FlatList
         data={workers}
         renderItem={({ item }) => <WorkerItem item={item} onPress={handleDetails}/>}
         keyExtractor={(item, index) => index}
         ItemSeparatorComponent={Separator}
       />
-      <FAB
-        icon={{ name: 'add', color: 'white' }}
-        size="large"
-        placement="right"
-        color="black"
-        onPress={handleAdd}
-      />
+      </View>
+      <TouchableOpacity style={style.addButton} onPress={handleAdd}>
+          <Icon name="add" />
+          <Text style={style.addButtonText}>Add a worker</Text>
+        </TouchableOpacity>
     </View>
     );
 }
