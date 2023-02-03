@@ -147,8 +147,7 @@ export default function TakePhotoScreen({ route, navigation }) {
         /* Make a date */
         let date = new Date().toISOString();
         
-        let photoData = {"fieldID": fieldId, "amountFlowers": amtFlowers, "workerID": workerId, "date": date, "fieldOwnerID": fOwnerId, "x": JSON.stringify(x), "y": JSON.stringify(y)};
-        console.log(photoData)
+        let photoData = {"fieldID": fieldId, "amountFlowers": amtFlowers, "workerID": workerId, "date": "2023-02-03T09:50:31.303Z", "fieldOwnerID": fOwnerId, "x": JSON.stringify(x), "y": JSON.stringify(y)};
         try{
             await DbAPI.addPhotoData(photoData);
         } catch (err){

@@ -117,9 +117,16 @@ class DbAPI {
     }
     // Post photodata
     static async addPhotoData(photoData){
-        console.log("data:", photoData);
         try{
-            await axios.post(baseUrl + "/PhotoData", photoData);
+            await axios.post(baseUrl + "PhotoData", {
+                "fieldID": photoData.fieldID,
+                "amountFlowers": photoData.amountFlowers, 
+                "workerID": photoData.workerID, 
+                "date": photoData.date, 
+                "fieldOwnerID": photoData.fieldOwnerID,
+                "x": photoData.x,
+                "y": photoData.y
+            });
         } catch (err){
             console.log(err);
         }
