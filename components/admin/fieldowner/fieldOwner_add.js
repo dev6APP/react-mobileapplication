@@ -69,7 +69,7 @@ export default function AddFieldOwner({navigation}) {
           <Error/>
         }
         console.log('tried:', fieldOwner);
-        //navigation.goBack();
+        navigation.goBack();
       } else {
         Alert.alert("Please select a date")
       }
@@ -118,7 +118,7 @@ export default function AddFieldOwner({navigation}) {
         />
     </View>
 
-    <Picker selectedValue={languages[languageIndex].languageID} onValueChange={setFieldOwnerLanguage} style={{color: 'white', flex:1}}>
+    <Picker selectedValue={languages[languageIndex].languageID} onValueChange={setFieldOwnerLanguage} style={{color: 'white'}}>
       {
         languages.map((item) => (
         <Picker.Item key={`Language${item.languageID}`} label={item.name} value={item.languageID} />

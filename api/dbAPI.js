@@ -145,11 +145,14 @@ class DbAPI {
     static async addFieldOwner(fieldOwner){
         console.log("data:", fieldOwner);
         try{
-            const response = await axios.post(baseUrl + "/FieldOwner", fieldOwner);
-            console.log(response);
+            await axios.post(baseUrl + "FieldOwner", fieldOwner);
         } catch (err){
             console.log(err);
         }
+    }
+
+    static deleteFieldOwner(id) {
+        return axios.delete(baseUrl + "FieldOwner/" + id);
     }
 }
 
