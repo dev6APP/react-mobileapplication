@@ -51,7 +51,7 @@ export default function FarmsScreen({ navigation }) {
     
     if(loading) return <Fetching/>
     function handleAdd(){
-      navigation.navigate('AddFarm');
+      navigation.navigate('AddFarm', {id: 1});
     }
 
     function handleDetails(item){
