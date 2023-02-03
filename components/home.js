@@ -7,9 +7,6 @@ import { styles } from "../styles/styles";
 // firebase
 import '../config/firebase';
 import { useAuthentication } from '../hooks/use_authentication';
-  
-// Geolocation
-global.location = null;
 
 // Icons
 import { Icon } from "@react-native-material/core";
@@ -17,31 +14,38 @@ import { Icon } from "@react-native-material/core";
 // Statistics
 import Stat_lineChart from './visualisations/statistics_lineChart'
 import Stat_BarChart from './visualisations/statistics_barChart'
-import Stat_heatmap from "./visualisations/statistics_heatmap";
 import Stat_interesting from "./visualisations/statistics_interesting";
 import { useEffect, useState } from "react";
 import DbAPI from "../api/DbAPI";
 
+//Loading
 import Fetching from "../layout/message_fetching";
 
 export default function HomeScreen({ navigation }) {
-    const [amtYears, setAmtYears] = useState(3);
+    // Stat flowers over year
+    const [amtYears, setAmtYears] = useState(7);
     let labelYears = [];
     let amountYears = [{data: []}]
     const [lineChartData, setLineChartData] = useState(null);
 
+    // Stat flowers per field this year
+    const [farms, setFarms] = useState(null);
+
+    // Fields of fieldOwner
+
     const fieldOwnerId = 1;
 
     useEffect(() => {
-        getOverYears();
+        getOverYears(fieldOwnerId);
+        getFarms(fieldOwnerId);
     }, [amtYears])
 
-    async function getOverYears(){
+    async function getOverYears(id){
         const currentYear = new Date().getFullYear();
         for(let i = 0; i < amtYears; i++){
             const year = currentYear - amtYears + i + 1;
             try{
-                const result = await DbAPI.getAmountOfFieldOwnerOverYear(fieldOwnerId, year)
+                const result = await DbAPI.getAmountOfFieldOwnerOverYear(id, year)
                 labelYears.push(JSON.stringify(year));
                 amountYears[0].data.push(result.data);
             } catch (err) {
@@ -49,6 +53,37 @@ export default function HomeScreen({ navigation }) {
             }
         }
         setLineChartData({ labels: labelYears, datasets: amountYears })
+    }
+
+    async function getFarms(id){
+        let farmsData = [];
+        const result = await DbAPI.getFarmFromFieldOwner(id);
+        let tempFarms = result.data;
+        for(let i = 0; i < tempFarms.length; i++){
+            let farm = tempFarms[i];
+            let farmData = {name: farm.name, fields: []};
+                            
+            let fieldsData = { labels: [], datasets: [{data: []}]};
+
+            for(let j = 0; j < farm.fields.length; j++){
+                let field = farm.fields[j];
+
+                const result = await DbAPI.getAmountPerField(field.fieldID);
+
+                fieldsData.labels.push(field.name);
+                fieldsData.datasets[0].data.push(result.data);
+            }
+
+            farmData.fields.push(fieldsData);
+
+            farmsData.push(farmData);
+        }
+        setFarms(farmsData);
+    }
+
+    async function getPerField(){
+        let fieldId = 1;
+        let result = await DbAPI.getAmountPerField(fieldId);
     }
 
     const {user} = useAuthentication();
@@ -72,41 +107,25 @@ export default function HomeScreen({ navigation }) {
     // Size of icon
     const size = 40;
 
-    if(!lineChartData) return <Fetching message="Getting data..."/>
-    
+    if(!lineChartData) return <Fetching message="Getting flower data..."/>
+    if(!farms) return <Fetching message="Getting farm data..."/>
+
     return (
         <View style={style.body}>
-            <ScrollView>
-                    <TouchableOpacity style={[style.largeCameraButton, style.mb10]} onPress={() => {navigation.navigate('Camera')}}>
-                        <Icon name="camera-iris" size={size} style={style.largeCameraButtonText}/>
-                    </TouchableOpacity>
-                    {user?.uid == "uNek9kZlU9W8MAH5qDtze3CBc8j1"
-                    ? <View>
-                        <Text>you are a worker</Text>
-                    </View>
-                    : <View> 
-                        <Stat_lineChart 
-                            title={lineChartTitle}
-                            data={lineChartData}
-                            padding={paddingCharts}
-                        />
-                        <TouchableOpacity onPress={() => setAmtYears(amtYears + 1)}><Text>Up</Text></TouchableOpacity>
-                        <TouchableOpacity onPress={() => setAmtYears(amtYears - 1)}><Text>Down</Text></TouchableOpacity>
-                        <Stat_BarChart 
-                            title={barChartTitle}
-                            data={barChartData}
-                            padding={paddingCharts}
-                        />
-                        <Stat_interesting 
-                            title="Estimated number of strawberries on field 1"
-                            beforeData=""
-                            afterData=" strawberries"
-                            data={17259}    
-                        />
-                        <Stat_heatmap/>
-                    </View>}
+            <ScrollView>    
+                <TouchableOpacity style={[style.largeCameraButton, style.mb10]} onPress={() => {navigation.navigate('Camera')}}>
+                    <Icon name="camera-iris" size={size} style={style.largeCameraButtonText}/>
+                </TouchableOpacity>
+                <Stat_lineChart title={lineChartTitle} data={lineChartData} padding={paddingCharts} />
+                {farms.map((farm, index) => (
+                   farm.fields.length > 0 && (
+                    <>
+                        <Stat_BarChart key={`barChart${index}`} title={`Flowers per farm: ${farm.name}`} data={farm.fields[0]} padding={paddingCharts} />
+                    </>
+                )
+                ))}
             </ScrollView>
-                </View>
+        </View>
     );
     
 }
