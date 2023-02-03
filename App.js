@@ -45,7 +45,7 @@ import AddWorker from './components/workers/worker_add';
 import AddFarm from './components/farms/farm_add';
 import EditField from './components/fields/field_edit';
 import AddField from './components/fields/field_add';
-
+import AddFieldOwner from './components/admin/fieldowner/fieldOwner_add';
 import EditFarm from './components/farms/farm_edit';
 
 // there is a warning that does not matter
@@ -96,6 +96,7 @@ function AdminFieldOwnerStackScreen(){
     <AdminFieldOwnerStack.Navigator>
       <AdminFieldOwnerStack.Screen name="FieldOwnerList" component={AdminFieldOwnerScreen} options={{title: "Admin: Field owners"}}/>
       <AdminFieldOwnerStack.Screen name="FieldOwnerDetails" component={AdminFieldOwnerDetails} options={{title: "Admin: Field owner detail"}}/>
+      <AdminFieldOwnerStack.Screen name="AddFieldOwner" component={AddFieldOwner} options={{title: "Admin: Add Field owner"}}/>
     </AdminFieldOwnerStack.Navigator>
   )
 }
