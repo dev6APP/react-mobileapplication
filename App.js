@@ -46,6 +46,8 @@ import AddFarm from './components/farms/farm_add';
 import EditField from './components/fields/field_edit';
 import AddField from './components/fields/field_add';
 
+import EditFarm from './components/farms/farm_edit';
+
 // there is a warning that does not matter
 import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['AsyncStorage has been extracted from react-native core']);
@@ -82,7 +84,7 @@ function FarmStackScreen() {
       <FarmStack.Screen name="AddFarm" component={AddFarm} options={{ title: 'Farms: Add' }}/>
       <FarmStack.Screen name="EditField" component={EditField} options={{ title: 'Field: Edit' }}/>
       <FarmStack.Screen name="AddField" component={AddField} options={{ title: 'Field: Add' }}/>
-
+      <FarmStack.Screen name="EditFarm" component={EditFarm} options={{ title: 'Farm: Edit' }}/>
     </FarmStack.Navigator>
   );
 }
