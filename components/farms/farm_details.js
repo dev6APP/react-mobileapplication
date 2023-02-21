@@ -112,7 +112,7 @@ export default function FarmDetailsScreen({ route, navigation }) {
 
   if(!farm) return <Fetching message="Getting farm details..."/>
   if(!farmLocationCoords) return <Fetching message="Getting farm location..."/>
-  if(!max) return <Fetching message="Getting random data..."/>
+  //if(!max) return <Fetching message="Getting random data..."/>
     
   async function deleteFarm(id){
     try {

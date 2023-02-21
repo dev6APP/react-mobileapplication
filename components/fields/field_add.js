@@ -1,7 +1,7 @@
-import { View, Text, ScrollView } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import {Icon} from "react-native-elements";
 
 import { FormItem } from 'react-native-form-component';
-import {Button, FAB} from "react-native-elements";
 
 //theme
 import useThemedStyles from "../../styles/theme/useThemedStyles";
@@ -14,6 +14,7 @@ import Fetching from '../../layout/message_fetching';
 import DbAPI from '../../api/DbAPI';
 import { useState, useEffect } from 'react';
 import { Flex } from '@react-native-material/core';
+import { color } from '@rneui/base';
 
 export default function AddField({ route, navigation }) {
     const {id} = route.params;
@@ -85,7 +86,7 @@ export default function AddField({ route, navigation }) {
         placeholder='Field name'
         />
 
-      <Text>Coordinate 1:</Text>
+      <Text style={style.text}>Coordinate 1:</Text>
       <View style={{display: 'flex', flexDirection: 'row'}}>
       <FormItem style={{marginRight: 5, flex: 1}}
         isRequired
@@ -101,7 +102,7 @@ export default function AddField({ route, navigation }) {
         />
         </View>
 
-        <Text>Coordinate 2:</Text>
+        <Text style={style.text}>Coordinate 2:</Text>
       <View style={{display: 'flex', flexDirection: 'row'}}>
       <FormItem style={{marginRight: 5, flex: 1}}
         isRequired
@@ -117,7 +118,7 @@ export default function AddField({ route, navigation }) {
         />
         </View>
 
-        <Text>Coordinate 3:</Text>
+        <Text style={style.text}>Coordinate 3:</Text>
       <View style={{display: 'flex', flexDirection: 'row'}}>
       <FormItem style={{marginRight: 5, flex: 1}}
         isRequired
@@ -133,7 +134,7 @@ export default function AddField({ route, navigation }) {
         />
         </View>
 
-        <Text>Coordinate 4:</Text>
+        <Text style={style.text}>Coordinate 4:</Text>
       <View style={{display: 'flex', flexDirection: 'row'}}>
       <FormItem style={{marginRight: 5, flex: 1}}
         isRequired
@@ -149,10 +150,10 @@ export default function AddField({ route, navigation }) {
         />
         </View>
 
-        
-      <Button
-        onPress={() => addField(field, coordinate1, coordinate2, coordinate3, coordinate4)}
-      >Save</Button>
+        <TouchableOpacity style={style.addButton} 
+          onPress={() => addField(field, coordinate1, coordinate2, coordinate3, coordinate4)}>
+          <Icon name="add" />
+        </TouchableOpacity>
     </ScrollView> 
   );
 };

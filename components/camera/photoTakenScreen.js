@@ -139,7 +139,6 @@ export default function TakePhotoScreen({ route, navigation }) {
         // nrFlowers needs to be reworked after AI Puts the result in JSON instead of text
         let amtFlowers = nrFlowers;
         console.log(nrFlowers);
-        amtFlowers = 42;
         console.log("amtFlowers:", amtFlowers);
 
         // FieldownerID
@@ -150,7 +149,7 @@ export default function TakePhotoScreen({ route, navigation }) {
         let date = new Date().toISOString();
         
         let photoData = {"fieldID": fieldId, "amountFlowers": amtFlowers, "workerID": workerId, 
-        "date": "2023-02-03T09:50:31.303Z", "fieldOwnerID": fOwnerId, "x": JSON.stringify(x), "y": JSON.stringify(y)};
+        "date": date, "fieldOwnerID": fOwnerId, "x": JSON.stringify(x), "y": JSON.stringify(y)};
         try{
             await DbAPI.addPhotoData(photoData);
         } catch (err){
