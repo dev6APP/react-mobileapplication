@@ -1,4 +1,4 @@
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Image, Text, TouchableOpacity, View } from "react-native";
 
 // Theme
 import useThemedStyles from "../../styles/theme/useThemedStyles";
@@ -87,7 +87,9 @@ export default function TakePhotoScreen({ route, navigation }) {
     async function getAmountOfFlowers(){
         let base64 = await FileSystem.readAsStringAsync(image, { encoding: 'base64'});
         const result = await AiAPI.getResultFromBase64(base64);
+        console.log("AI response: ", result);
         setNrFlowers(result);
+        alert(result);
     }
 
     if(!farm) return <Fetching message={`Getting farm: ${farmId}...`}/>
@@ -128,8 +130,8 @@ export default function TakePhotoScreen({ route, navigation }) {
         // Do things with this image
         
         // Coordinates
-        let x = location.longitude;
-        let y = location.latitude;
+        let y = location.longitude;
+        let x = location.latitude;
 
         // Field id
         let fieldId = selected;
@@ -137,7 +139,7 @@ export default function TakePhotoScreen({ route, navigation }) {
         // nrFlowers needs to be reworked after AI Puts the result in JSON instead of text
         let amtFlowers = nrFlowers;
         console.log(nrFlowers);
-        amtFlowers = 15;
+        amtFlowers = 42;
         console.log("amtFlowers:", amtFlowers);
 
         // FieldownerID
@@ -147,7 +149,8 @@ export default function TakePhotoScreen({ route, navigation }) {
         /* Make a date */
         let date = new Date().toISOString();
         
-        let photoData = {"fieldID": fieldId, "amountFlowers": amtFlowers, "workerID": workerId, "date": "2023-02-03T09:50:31.303Z", "fieldOwnerID": fOwnerId, "x": JSON.stringify(x), "y": JSON.stringify(y)};
+        let photoData = {"fieldID": fieldId, "amountFlowers": amtFlowers, "workerID": workerId, 
+        "date": "2023-02-03T09:50:31.303Z", "fieldOwnerID": fOwnerId, "x": JSON.stringify(x), "y": JSON.stringify(y)};
         try{
             await DbAPI.addPhotoData(photoData);
         } catch (err){

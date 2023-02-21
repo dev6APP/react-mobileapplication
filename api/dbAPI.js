@@ -19,6 +19,7 @@ class DbAPI {
     }
 
     static getFarmDetails(id) {
+        console.log('id', id)
         return axios.get(baseUrl + "Farm/" + id);
     }
 
@@ -117,24 +118,9 @@ class DbAPI {
     }
     // Post photodata
     static async addPhotoData(photoData){
-        console.log(photoData)
+        console.log("photoData: ", photoData)
         try{
-            await axios.post(baseUrl + "PhotoData", {
-                //"fieldID": photoData.fieldID,
-                //"amountFlowers": photoData.amountFlowers, 
-                //"workerID": photoData.workerID, 
-                //"date": photoData.date, 
-                //"fieldOwnerID": photoData.fieldOwnerID,
-                //"x": photoData.x,
-                //"y": photoData.y
-                "fieldID": 1,
-                "amountFlowers": 15, 
-                "workerID": 1, 
-                "date": "2023-02-03T09:50:31.303Z", 
-                "fieldOwnerID": 1,
-                "x": "4.9682609",
-                "y": "51.1573353"
-            });
+            await axios.post(baseUrl + "PhotoData", photoData);
         } catch (err){
             console.log(err);
         }
@@ -151,6 +137,25 @@ class DbAPI {
 
     static deleteFieldOwner(id) {
         return axios.delete(baseUrl + "FieldOwner/" + id);
+    }
+
+    static async addBoundary(coordinate1, coordinate2, coordinate3, coordinate4 ){
+        try{
+            await axios.post(baseUrl + "Boundary", coordinate1);
+            console.log("saved");
+            await axios.post(baseUrl + "Boundary", coordinate2);
+            console.log("saved");
+            await axios.post(baseUrl + "Boundary", coordinate3);
+            console.log("saved");
+            await axios.post(baseUrl + "Boundary", coordinate4);
+            console.log("saved");
+        } catch (err){
+            console.log(err);
+        }
+    }
+
+    static getLastFieldId() {
+        return axios.get(baseUrl + "Field");
     }
 }
 

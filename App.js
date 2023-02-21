@@ -108,7 +108,7 @@ export default function App() {
   
   const {user} = useAuthentication();
 
-
+  //Field owner
   if (user?.uid == "6TQuN609EAdG5toyuHxW40TaDU62"){
     // console.log('its the fieldowner');
     return (
@@ -123,9 +123,6 @@ export default function App() {
               switch (route.name){
                 case "Home":
                   iconName = 'home';
-                  break;
-                case "Admin: Field owner":
-                  iconName = 'account-key';
                   break;
                 case "Workers":
                   iconName = 'hammer';
@@ -154,7 +151,6 @@ export default function App() {
             <Tab.Screen name="Home" component={HomeScreen}/>
             <Tab.Screen name="Workers" component={WorkerStackScreen} options={{headerShown: false}}/>
             <Tab.Screen name="Farms" component={FarmStackScreen} options={{headerShown: false}}/>
-            <Tab.Screen name="Admin: Field owner" component={AdminFieldOwnerStackScreen} options={{headerShown: false}}/>
             <Tab.Screen name="Camera" component={PhotoScreen}/>
             <Tab.Screen name="Account" component={AccountScreen}/>
             
@@ -166,6 +162,7 @@ export default function App() {
     </ThemeProvider>
     )
   }
+  //Worker
   if (user?.uid == "uNek9kZlU9W8MAH5qDtze3CBc8j1"){
     // console.log('its the worker');
     return (
@@ -180,9 +177,6 @@ export default function App() {
               switch (route.name){
                 case "Home":
                   iconName = 'home';
-                  break;
-                case "Farms":
-                  iconName = 'tractor';
                   break;
                   case "Account":
                     iconName = 'account';
@@ -200,7 +194,6 @@ export default function App() {
             },
           })}>
             <Tab.Screen name="Home" component={HomeScreen}/>
-            <Tab.Screen name="Farms" component={FarmStackScreen} options={{headerShown: false}}/>
             <Tab.Screen name="Account" component={AccountScreen}/>
             <Tab.Screen name="Camera" component={PhotoScreen}/>
             
@@ -212,6 +205,50 @@ export default function App() {
     </ThemeProvider>
     )
   }
+
+  //Admin
+  if (user?.uid == "XQNeSN6FtagOXrYU8GMOmEz1Jmy1"){
+    // console.log('its the admin');
+    return (
+      <ThemeProvider>
+    <IconComponentProvider IconComponent={MaterialCommunityIcons}>
+      <RecoilRoot>
+      <ApolloProvider client={client}>
+      <NavigationContainer>
+          <Tab.Navigator initialRouteName='Home' screenOptions={({route}) => ({
+            tabBarIcon:({focused, color, size}) => {
+              let iconName;
+              switch (route.name){
+                case "Admin: Field owner":
+                  iconName = 'account-key';
+                  break;
+                case "Account":
+                  iconName = 'account';
+                  break;
+              }
+              return <Icon name={iconName} size={size} color={color}/>
+            },
+            tabBarActiveTintColor: useThemedStyles(red),
+            tabBarInactiveTintColor: useThemedStyles(text),
+            tabBarStyle: {
+              backgroundColor: useThemedStyles(background),
+            },
+            tabBarIconStyle: {
+              height: 40
+            },
+          })}>
+            <Tab.Screen name="Admin: Field owner" component={AdminFieldOwnerStackScreen} options={{headerShown: false}}/>
+            <Tab.Screen name="Account" component={AccountScreen}/>
+          </Tab.Navigator>
+        </NavigationContainer>
+      </ApolloProvider>
+      </RecoilRoot>
+    </IconComponentProvider>
+    </ThemeProvider>
+    )
+  }
+
+  // Not signed in
   return (
     <ThemeProvider>
     <IconComponentProvider IconComponent={MaterialCommunityIcons}>

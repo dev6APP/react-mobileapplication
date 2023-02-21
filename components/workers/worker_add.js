@@ -129,6 +129,7 @@ export default function AddWorker({ navigation }) {
         value={worker.password}
         onChangeText={(password) => setWorker({...worker, password})}
         placeholder='Password'
+        secureTextEntry={true}
         />
         
         <FormItem

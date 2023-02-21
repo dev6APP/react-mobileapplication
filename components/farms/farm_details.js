@@ -25,6 +25,8 @@ export default function FarmDetailsScreen({ route, navigation }) {
   // Styling
   const style = useThemedStyles(styles);
   
+  const [loading, setLoading] = useState(true);
+
   const { id } = route.params;
 
   // Farm details
@@ -35,10 +37,23 @@ export default function FarmDetailsScreen({ route, navigation }) {
   let tempMax = 0;
 
   const [farmLocationCoords, setFarmLocationCoords] = useState(null);
-  
+
   useEffect(() => {
-    getFarmDetails(id);
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        getFarmDetails(id);
+      } catch (error) {
+        console.log('Something went wrong with the database api.', error);
+      }
+      setLoading(false);
+    }
+    const focusHandler = navigation.addListener('focus', () => {
+      fetchData();
+    });
   }, []);
+
+  if(loading) return <Fetching message="Getting farm details..."/>
 
   function handleEdit(){
     navigation.navigate('EditFarm', { id: id, name: farm.name, address: farm.address});
@@ -51,13 +66,14 @@ export default function FarmDetailsScreen({ route, navigation }) {
   async function getFarmDetails(farmId){
     try{
       const result = await DbAPI.getFarmDetails(farmId);
+      console.log('querie1')
       let tempFarm = result.data[0];
       for(let i = 0; i < tempFarm.fields.length; i++){
         let fieldId = tempFarm.fields[i].fieldID;
-
+        console.log('fieldId', fieldId)
         let boundaries = [];
         const resultBoundary = await DbAPI.getBoundaries(fieldId);
-
+        console.log('querie2')
         for(let j = 0; j < resultBoundary.data.length; j++) {
           let boundary = {latitude: parseFloat(resultBoundary.data[j].x), longitude: parseFloat(resultBoundary.data[j].y)}
           boundaries.push(boundary);
@@ -65,7 +81,8 @@ export default function FarmDetailsScreen({ route, navigation }) {
 
         let photos = []
         const resultPhoto = await DbAPI.getPhotoDataPerField(fieldId);
-        
+        console.log('querie3')
+
         for(let k = 0; k < resultPhoto.data.length; k++){
           console.log("Amount flowers on photo:", resultPhoto.data[k].amountFlowers + "\n" + "Amount flowers in max:", max);
           if(resultPhoto.data[k].amountFlowers > tempMax) {

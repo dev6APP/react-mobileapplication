@@ -100,6 +100,7 @@ export default function AddFieldOwner({navigation}) {
         isRequired
         value={fieldOwner.password}
         onChangeText={(password) => setFieldOwner({...fieldOwner, password})}
+        secureTextEntry={true}
         />
         <View style={{display: 'flex', flexDirection: 'row'}}>
 
