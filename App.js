@@ -175,9 +175,6 @@ export default function App() {
             tabBarIcon:({focused, color, size}) => {
               let iconName;
               switch (route.name){
-                case "Home":
-                  iconName = 'home';
-                  break;
                   case "Account":
                     iconName = 'account';
                     break;
@@ -193,7 +190,6 @@ export default function App() {
               backgroundColor: useThemedStyles(background),
             },
           })}>
-            <Tab.Screen name="Home" component={HomeScreen}/>
             <Tab.Screen name="Account" component={AccountScreen}/>
             <Tab.Screen name="Camera" component={PhotoScreen}/>
             

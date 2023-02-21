@@ -37,7 +37,17 @@ export default function HomeScreen({ navigation }) {
 
     useEffect(() => {
         getOverYears(fieldOwnerId);
-        getFarms(fieldOwnerId);
+        const fetchData = async () => {
+            try {
+                
+                getFarms(fieldOwnerId);
+            } catch (error) {
+              console.log('Something went wrong with the database api.', error);
+            }
+          }
+          const focusHandler = navigation.addListener('focus', () => {
+            fetchData();
+          });
     }, [amtYears])
 
     async function getOverYears(id){
