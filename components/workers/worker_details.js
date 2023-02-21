@@ -1,11 +1,9 @@
 import { View, Text, TouchableOpacity, Animated } from 'react-native';
 import React from "react";
-import Icon from "react-native-vector-icons/FontAwesome";
 
 //theme
 import useThemedStyles from "../../styles/theme/useThemedStyles";
 import { styles } from "../../styles/styles";
-import { red } from "../../styles/styles";
 
 
 // Layout
@@ -14,7 +12,6 @@ import Error from '../../layout/message_error';
 
 import DbAPI from '../../api/DbAPI';
 import { useState, useEffect } from 'react';
-import { FAB } from '@react-native-material/core';
 
 export default function WorkerDetailsScreen({ route, navigation }) {
     const { id } = route.params;

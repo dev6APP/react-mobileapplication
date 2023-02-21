@@ -6,9 +6,6 @@ import { styles } from "../../styles/styles";
 
 import { useEffect, useState } from "react";
 
-// Geolocation
-import * as Location from 'expo-location';
-
 // Import Camera
 import { Camera, CameraType, FlashMode } from 'expo-camera';
 

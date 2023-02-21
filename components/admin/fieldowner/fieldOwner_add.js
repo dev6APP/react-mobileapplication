@@ -13,7 +13,6 @@ import Fetching from '../../../layout/message_fetching';
 import DbAPI from '../../../api/DbAPI';
 import { useState, useEffect } from 'react';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { useRecoilState, useRecoilValue } from 'recoil';
 import { Picker } from '@react-native-picker/picker';
 import { FormItem } from 'react-native-form-component';
 import { Alert } from 'react-native';

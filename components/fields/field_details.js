@@ -6,10 +6,8 @@ import { styles } from "../../styles/styles";
 
 // Layout
 import Fetching from '../../layout/message_fetching';
-import Error from '../../layout/message_error';
 
 // queries
-import DbAPI from '../../api/DbAPI';
 import { useState, useEffect } from "react";
 
 // Boundaries

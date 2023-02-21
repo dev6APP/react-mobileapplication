@@ -9,12 +9,9 @@ import { styles } from "../../styles/styles";
 
 // Layout
 import Error from '../../layout/message_error';
-import Fetching from '../../layout/message_fetching';
 
 import DbAPI from '../../api/DbAPI';
 import { useState, useEffect } from 'react';
-import { Flex } from '@react-native-material/core';
-import { color } from '@rneui/base';
 
 export default function AddField({ route, navigation }) {
     const {id} = route.params;

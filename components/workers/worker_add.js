@@ -17,7 +17,6 @@ import { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { color } from '@rneui/base';
 
 
 export default function AddWorker({ navigation }) {

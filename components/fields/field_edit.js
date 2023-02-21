@@ -1,6 +1,4 @@
 import { View, Text } from 'react-native';
-import { Pressable, Button } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
 
 import { FormItem } from 'react-native-form-component';
 import {FAB} from "react-native-elements";
@@ -14,10 +12,6 @@ import Error from '../../layout/message_error';
 
 import DbAPI from '../../api/DbAPI';
 import { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import DateTimePickerModal from "react-native-modal-datetime-picker";
-import Fetching from '../../layout/message_fetching';
-
 
 export default function EditField({ navigation }) {
     const [fieldName, setFieldName] = useState("");
