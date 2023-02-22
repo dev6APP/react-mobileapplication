@@ -1,7 +1,7 @@
-      {
+{
   "expo": {
-    "name": "mobileApplication",
-    "slug": "mobileApplication",
+    "name": "Dev6 Detection",
+    "slug": "dev6-strawberry-detection",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -32,8 +32,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "abce8b76-de5c-4ef6-a6b8-6c0cad012380"
+        "projectId": "607b382f-9d86-4c95-927f-7ba7658e91bb"
       }
-    }
+    },
+    "owner": "nealgysemans"
   }
 }

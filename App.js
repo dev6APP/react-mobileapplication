@@ -28,10 +28,6 @@ import SignUpScreen from './components/authentication/signup_screen';
 // Provider
 import ThemeProvider from './styles/theme/ThemeProvider';
 
-// data
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
-import configData from './config/hasura.json';
-
 // firebase
 import './config/firebase';
 import { useAuthentication } from './hooks/use_authentication';
@@ -53,14 +49,6 @@ import { LogBox } from 'react-native';
 LogBox.ignoreLogs(['AsyncStorage has been extracted from react-native core']);
 
 const Tab = createBottomTabNavigator();
-
-const client = new ApolloClient({
-  uri: configData.qlendpoint,
-  headers: {
-    'x-hasura-admin-secret': configData.qlkey
-  },
-  cache: new InMemoryCache()
-});
 
 const WorkersStack = createNativeStackNavigator();
 
@@ -115,7 +103,6 @@ export default function App() {
       <ThemeProvider>
     <IconComponentProvider IconComponent={MaterialCommunityIcons}>
       <RecoilRoot>
-      <ApolloProvider client={client}>
       <NavigationContainer>
           <Tab.Navigator initialRouteName='Home' screenOptions={({route}) => ({
             tabBarIcon:({focused, color, size}) => {
@@ -156,7 +143,6 @@ export default function App() {
             
           </Tab.Navigator>
         </NavigationContainer>
-      </ApolloProvider>
       </RecoilRoot>
     </IconComponentProvider>
     </ThemeProvider>
@@ -169,7 +155,6 @@ export default function App() {
       <ThemeProvider>
     <IconComponentProvider IconComponent={MaterialCommunityIcons}>
       <RecoilRoot>
-      <ApolloProvider client={client}>
       <NavigationContainer>
           <Tab.Navigator screenOptions={({route}) => ({
             tabBarIcon:({focused, color, size}) => {
@@ -195,7 +180,6 @@ export default function App() {
             
           </Tab.Navigator>
         </NavigationContainer>
-      </ApolloProvider>
       </RecoilRoot>
     </IconComponentProvider>
     </ThemeProvider>
@@ -209,7 +193,6 @@ export default function App() {
       <ThemeProvider>
     <IconComponentProvider IconComponent={MaterialCommunityIcons}>
       <RecoilRoot>
-      <ApolloProvider client={client}>
       <NavigationContainer>
           <Tab.Navigator initialRouteName='Home' screenOptions={({route}) => ({
             tabBarIcon:({focused, color, size}) => {
@@ -237,7 +220,6 @@ export default function App() {
             <Tab.Screen name="Account" component={AccountScreen}/>
           </Tab.Navigator>
         </NavigationContainer>
-      </ApolloProvider>
       </RecoilRoot>
     </IconComponentProvider>
     </ThemeProvider>
@@ -249,14 +231,12 @@ export default function App() {
     <ThemeProvider>
     <IconComponentProvider IconComponent={MaterialCommunityIcons}>
       <RecoilRoot>
-      <ApolloProvider client={client}>
       <NavigationContainer>
           <Stack.Navigator initialRouteName="Sign In">
           <Stack.Screen name="Sign In" component={SignInScreen} />
           <Stack.Screen name="Sign Up" component={SignUpScreen} />
         </Stack.Navigator>
         </NavigationContainer>
-      </ApolloProvider>
       </RecoilRoot>
     </IconComponentProvider>
     </ThemeProvider>

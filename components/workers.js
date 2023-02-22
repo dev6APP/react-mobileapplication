@@ -1,8 +1,5 @@
 import { FlatList, View, Text, TouchableOpacity } from "react-native"
 import {Icon} from "react-native-elements";
-// Apollo
-import { disableExperimentalFragmentVariables, useQuery } from "@apollo/client";
-import { GET_WORKERS_FROM_FARM } from "../gql/queries";
 
 //theme
 import useThemedStyles from "../styles/theme/useThemedStyles";
